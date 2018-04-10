@@ -1,0 +1,13 @@
+<form>
+  <div class="form-group">
+    <input type="text" class="form-control" placeholder="Zoeken"/>
+  </div>
+</form>
+<ul class="list-group">
+  <li *ngFor="let vehicle of vehicleService.getVehicles() | async"
+      (click)="selectVehicle(vehicle)"
+      [class.active]="isThisVehicleSelected(vehicle)"
+      class="hoverable list-group-item">
+    {{ vehicle.brand }} {{ vehicle.type }}
+  </li>
+</ul>
