@@ -1,5 +1,5 @@
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-  <a class="navbar-brand" href="#">Politiesysteem Finland</a>
+  <a class="navbar-brand" routerLink="/">Politiesysteem Finland</a>
   <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
           aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
     <span class="navbar-toggler-icon"></span>
@@ -7,9 +7,8 @@
 
   <div class="collapse navbar-collapse" id="navbarSupportedContent">
     <ul class="navbar-nav mr-auto">
-      <li class="nav-item hoverable" routerLinkActive="active" routerLink="/">
-        <a class="nav-link">Home <span class="sr-only">(current)</span></a>
-      </li>
+      <li class="nav-item hoverable" routerLinkActive="active" routerLink="owner-history">
+        <a class="nav-link">Owner history</a>
       <li class="nav-item hoverable" routerLinkActive="active" routerLink="/stolen-vehicle">
         <a class="nav-link">Stolen vehicles</a>
       </li>
@@ -17,5 +16,10 @@
         <a class="nav-link">Mark vehicle stolen</a>
       </li>
     </ul>
+    <!--<ul class="navbar-nav">-->
+    <!--<li class="nav-item hoverable" routerLinkActive="active" routerLink="login">-->
+    <!--<a class="nav-link">Login</a>-->
+    <!--</li>-->
+    <!--</ul>-->
   </div>
 </nav>
