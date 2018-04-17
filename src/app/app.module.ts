@@ -10,7 +10,6 @@ import {VehicleSelectorComponent} from './stolen-vehicle/vehicle-selector/vehicl
 import {VehicleService} from './services/vehicle.service';
 import {VehicleViewComponent} from './stolen-vehicle/vehicle-view/vehicle-view.component';
 import {AddStolenVehicleComponent} from './add-stolen-vehicle/add-stolen-vehicle/add-stolen-vehicle.component';
-import {VehicleViewComponent} from './owner-history/vehicle-view/vehicle-view.component';
 import {FormsModule} from '@angular/forms';
 import {JWTInterceptor} from './classes/JWTInterceptor';
 import {HTTP_INTERCEPTORS, HttpClient, HttpClientModule} from '@angular/common/http';
