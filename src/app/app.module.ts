@@ -3,27 +3,30 @@ import {NgModule} from '@angular/core';
 
 
 import {AppComponent} from './app.component';
-import {OwnerHistoryComponent} from './owner-history/owner-history/owner-history.component';
+import {StolenVehicleComponent} from './stolen-vehicle/stolen-vehicle/stolen-vehicle.component';
 import {NavbarComponent} from './general/navbar/navbar.component';
 import {RouterModule, Routes} from '@angular/router';
 import {HomepageComponent} from './general/homepage/homepage.component';
-import {VehicleSelectorComponent} from './owner-history/vehicle-selector/vehicle-selector.component';
+import {VehicleSelectorComponent} from './stolen-vehicle/vehicle-selector/vehicle-selector.component';
 import {VehicleService} from './services/vehicle.service';
-import {VehicleViewComponent} from './owner-history/vehicle-view/vehicle-view.component';
+import {VehicleViewComponent} from './stolen-vehicle/vehicle-view/vehicle-view.component';
+import {AddStolenVehicleComponent} from './add-stolen-vehicle/add-stolen-vehicle/add-stolen-vehicle.component';
 
 const appRoutes: Routes = [
-  {path: 'owner-history', component: OwnerHistoryComponent},
+  {path: 'stolen-vehicle', component: StolenVehicleComponent},
+  {path: 'add-stolen-vehicle', component: AddStolenVehicleComponent},
   {path: '', component: HomepageComponent}
 ];
 
 @NgModule({
   declarations: [
     AppComponent,
-    OwnerHistoryComponent,
+    StolenVehicleComponent,
     NavbarComponent,
     HomepageComponent,
     VehicleSelectorComponent,
     VehicleViewComponent,
+    AddStolenVehicleComponent
   ],
   imports: [
     BrowserModule,

@@ -2,11 +2,11 @@ import {Component, OnInit} from '@angular/core';
 import {Vehicle} from '../../classes/Vehicle';
 
 @Component({
-  selector: 'app-owner-history',
-  templateUrl: './owner-history.component.html',
-  styleUrls: ['./owner-history.component.css']
+  selector: 'app-stolen-vehicle',
+  templateUrl: './stolen-vehicle.component.html',
+  styleUrls: ['./stolen-vehicle.component.css']
 })
-export class OwnerHistoryComponent implements OnInit {
+export class StolenVehicleComponent implements OnInit {
 
   public selectedVehicle: Vehicle;
 

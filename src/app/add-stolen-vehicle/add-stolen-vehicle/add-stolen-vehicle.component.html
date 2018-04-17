@@ -1,0 +1,11 @@
+<div class="row" style="margin-top: 30px">
+  <form (submit)="showVehicleInformation()" action="javascript:void(0)" >
+    <div class="form-group">
+      <input type="text" class="form-control" placeholder="Search"/>
+    </div>
+    <div> <input ([ngModel])="searchQuery" type="submit" class="btn btn-primary" value="Show information"></div>
+  </form>
+  <div class="col-sm-8">
+    <app-vehicle-view [vehicle]="selectedVehicle"></app-vehicle-view>
+  </div>
+</div>

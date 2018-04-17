@@ -1,20 +1,20 @@
 import {async, ComponentFixture, TestBed} from '@angular/core/testing';
 
-import {OwnerHistoryComponent} from './owner-history.component';
+import {AddStolenVehicleComponent} from './add-stolen-vehicle.component';
 
-describe('OwnerHistoryComponent', () => {
-  let component: OwnerHistoryComponent;
-  let fixture: ComponentFixture<OwnerHistoryComponent>;
+describe('AddStolenVehicleComponent', () => {
+  let component: AddStolenVehicleComponent;
+  let fixture: ComponentFixture<AddStolenVehicleComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [OwnerHistoryComponent]
+      declarations: [AddStolenVehicleComponent]
     })
       .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(OwnerHistoryComponent);
+    fixture = TestBed.createComponent(AddStolenVehicleComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
