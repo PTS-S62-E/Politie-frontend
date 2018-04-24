@@ -17,12 +17,15 @@ export class AddStolenVehicleComponent implements OnInit {
   ngOnInit() {
   }
 
-  public showVehicleInformation() {
-
+  public showVehicleInformation(vehicleService: VehicleService, licensePlate: String) {
+    vehicleService.getVehicles().subscribe(
+      data => {
+        data = data as Vehicle[];
+        this.selectedVehicle = data.find(function (vehicle) {
+          return vehicle.plate === licensePlate.trim();
+        });
+        console.log(data);
+      }
+    );
   }
-
-  // public setSelectedVehicle(vehicle: Vehicle) {
-  //  this.selectedVehicle = vehicle;
-  // }
-
 }

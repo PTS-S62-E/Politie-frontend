@@ -17,6 +17,7 @@ export class VehicleService {
         hardwareSn: '1234-abcd-1234',
         plate: '12-AB-34',
         type: 'F5000',
+        stolen: false,
         owners: [
           {
             from: moment().subtract(3, 'years').toDate(),
@@ -37,6 +38,7 @@ export class VehicleService {
         hardwareSn: '2345-bcde-2345',
         plate: '34-ZX-69',
         type: 'FI2',
+        stolen: true,
         owners: [
           {
             from: moment().subtract(1, 'years').toDate(),
@@ -57,6 +59,7 @@ export class VehicleService {
         hardwareSn: '5678-abcd,5678',
         plate: '69-AB-420',
         type: 'S23',
+        stolen: false,
         owners: [
           {
             from: moment().subtract(1, 'years').toDate(),

@@ -1,7 +1,7 @@
 <div class="row" style="margin-top: 30px">
-  <form (submit)="showVehicleInformation()" action="javascript:void(0)" >
+  <form (submit)="showVehicleInformation(vehicleService,searchInput.value)" action="javascript:void(0)" >
     <div class="form-group">
-      <input type="text" class="form-control" placeholder="Search"/>
+      <input #searchInput type="text" class="form-control" placeholder="Search"/>
     </div>
     <div> <input ([ngModel])="searchQuery" type="submit" class="btn btn-primary" value="Show information"></div>
   </form>

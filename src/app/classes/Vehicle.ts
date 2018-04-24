@@ -7,4 +7,5 @@ export interface Vehicle {
   hardwareSn: String;
   owners: Ownership[];
   category: String;
+  stolen: boolean;
 }
