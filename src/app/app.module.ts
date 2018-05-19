@@ -15,10 +15,12 @@ import {JWTInterceptor} from './classes/JWTInterceptor';
 import {HTTP_INTERCEPTORS, HttpClient, HttpClientModule} from '@angular/common/http';
 import {LoginService} from './services/login.service';
 import {ConfigService} from './services/config.service';
+import {MapComponent} from './map/map/map.component';
 
 const appRoutes: Routes = [
   {path: 'stolen-vehicle', component: StolenVehicleComponent},
   {path: 'add-stolen-vehicle', component: AddStolenVehicleComponent},
+  {path: 'stolen-vehicle/map', component: MapComponent},
   // {path: 'login', component: LoginComponent},
   {path: '', component: HomepageComponent}
 ];
@@ -31,7 +33,8 @@ const appRoutes: Routes = [
     HomepageComponent,
     VehicleSelectorComponent,
     VehicleViewComponent,
-    AddStolenVehicleComponent
+    AddStolenVehicleComponent,
+    MapComponent
     // LoginComponent,
   ],
   imports: [
