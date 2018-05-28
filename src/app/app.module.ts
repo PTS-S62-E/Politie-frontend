@@ -9,7 +9,6 @@ import {HomepageComponent} from './general/homepage/homepage.component';
 import {VehicleSelectorComponent} from './stolen-vehicle/vehicle-selector/vehicle-selector.component';
 import {VehicleService} from './services/vehicle.service';
 import {VehicleViewComponent} from './stolen-vehicle/vehicle-view/vehicle-view.component';
-import {AddStolenVehicleComponent} from './add-stolen-vehicle/add-stolen-vehicle/add-stolen-vehicle.component';
 import {FormsModule} from '@angular/forms';
 import {JWTInterceptor} from './classes/JWTInterceptor';
 import {HTTP_INTERCEPTORS, HttpClient, HttpClientModule} from '@angular/common/http';
@@ -19,9 +18,7 @@ import {MapComponent} from './map/map/map.component';
 
 const appRoutes: Routes = [
   {path: 'stolen-vehicle', component: StolenVehicleComponent},
-  {path: 'add-stolen-vehicle', component: AddStolenVehicleComponent},
   {path: 'stolen-vehicle/map', component: MapComponent},
-  // {path: 'login', component: LoginComponent},
   {path: '', component: HomepageComponent}
 ];
 
@@ -33,7 +30,6 @@ const appRoutes: Routes = [
     HomepageComponent,
     VehicleSelectorComponent,
     VehicleViewComponent,
-    AddStolenVehicleComponent,
     MapComponent
     // LoginComponent,
   ],
