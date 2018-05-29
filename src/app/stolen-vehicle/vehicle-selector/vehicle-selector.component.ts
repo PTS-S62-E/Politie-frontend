@@ -1,6 +1,4 @@
-import {Component, EventEmitter, OnInit, Output} from '@angular/core';
-import {VehicleService} from '../../services/vehicle.service';
-import {Vehicle} from '../../classes/Vehicle';
+import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {BehaviorSubject} from 'rxjs/BehaviorSubject';
 
 @Component({
@@ -10,27 +8,36 @@ import {BehaviorSubject} from 'rxjs/BehaviorSubject';
 })
 export class VehicleSelectorComponent implements OnInit {
 
-  public selectedVehicle: Vehicle;
+  @Input()
+  public vehicles: EuropolVehicle[] = [];
+  public filteredVehicles: EuropolVehicle[] = [];
   @Output()
-  public vehicleSelected: EventEmitter<Vehicle> = new EventEmitter<Vehicle>();
-  private _selectedVehicle: BehaviorSubject<Vehicle> = new BehaviorSubject<Vehicle>(null);
-  public readonly $selectedVehicle = this._selectedVehicle.asObservable();
+  public vehicleSelected = new EventEmitter<EuropolVehicle>();
+  public searchQuery = new BehaviorSubject('').asObservable();
+  public selectedVehicle: EuropolVehicle;
+  private _selectedVehicle = new BehaviorSubject<EuropolVehicle>(null);
 
-  constructor(public vehicleService: VehicleService) {
+  constructor() {
   }
 
   ngOnInit() {
+    this.searchQuery.subscribe(query => {
+      this.filteredVehicles = this.vehicles.filter(vehicle => {
+        return vehicle.id.toLowerCase().indexOf(query.toLowerCase()) !== -1;
+      });
+    });
+    this.filteredVehicles = this.vehicles;
   }
 
-  public isThisVehicleSelected(vehicle: Vehicle) {
+  public isThisVehicleSelected(vehicle: EuropolVehicle) {
     return this.selectedVehicle !== undefined &&
       this.selectedVehicle !== null &&
       vehicle !== undefined &&
       vehicle !== null &&
-      this.selectedVehicle.hardwareSn === vehicle.hardwareSn;
+      this.selectedVehicle.id === vehicle.id;
   }
 
-  public selectVehicle(vehicle: Vehicle) {
+  public selectVehicle(vehicle: EuropolVehicle) {
     this.selectedVehicle = vehicle;
     this._selectedVehicle.next(vehicle);
 

@@ -13,6 +13,8 @@ export class MapComponent implements OnInit {
   @Input()
   public mapInput: MapInput;
 
+  public visible: boolean = true;
+
   constructor() {
   }
 

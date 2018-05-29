@@ -1,13 +1,15 @@
 <form>
-  <div class="form-group">
-    <input type="text" class="form-control" placeholder="Zoeken"/>
-  </div>
+  <form>
+    <div class="form-group">
+      <input type="text" class="form-control" ([ngModel])="searchQuery" placeholder="Zoeken"/>
+    </div>
+  </form>
 </form>
 <ul class="list-group">
-  <li *ngFor="let vehicle of vehicleService.getVehicles() | async"
+  <li *ngFor="let vehicle of filteredVehicles"
       (click)="selectVehicle(vehicle)"
       [class.active]="isThisVehicleSelected(vehicle)"
       class="hoverable list-group-item">
-    {{ vehicle.brand }} {{ vehicle.type }}
+    {{ vehicle.id }} from {{ vehicle.country }}
   </li>
 </ul>

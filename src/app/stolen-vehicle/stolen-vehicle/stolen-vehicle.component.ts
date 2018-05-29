@@ -1,5 +1,5 @@
 import {Component, OnInit} from '@angular/core';
-import {Vehicle} from '../../classes/Vehicle';
+import {VehicleService} from '../../services/vehicle.service';
 
 @Component({
   selector: 'app-stolen-vehicle',
@@ -8,15 +8,16 @@ import {Vehicle} from '../../classes/Vehicle';
 })
 export class StolenVehicleComponent implements OnInit {
 
-  public selectedVehicle: Vehicle;
+  public selectedVehicle: EuropolVehicle;
 
-  constructor() {
+  constructor(public vehicleService: VehicleService) {
   }
 
   ngOnInit() {
+    this.vehicleService.getVehicles();
   }
 
-  public setSelectedVehicle(vehicle: Vehicle) {
+  public setSelectedVehicle(vehicle: EuropolVehicle) {
     this.selectedVehicle = vehicle;
   }
 
