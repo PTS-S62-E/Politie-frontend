@@ -1,6 +1,7 @@
 import {Component, Input, OnInit} from '@angular/core';
 import * as L from 'leaflet';
 import {MapInput} from '../../classes/MapInput';
+import {ITranslocation} from '../../classes/Translocation';
 
 @Component({
   selector: 'app-map',
@@ -28,6 +29,16 @@ export class MapComponent implements OnInit {
         lat: 51.4508747,
         lng: 5.4781492
       });
+
+      this.mapInput.locations.push({
+        lat: 51.5508747,
+        lng: 5.5781492
+      });
+
+      this.mapInput.locations.push({
+        lat: 51.6508747,
+        lng: 5.681492
+      });
     }
 
     const map = L.map('leafletmap').setView([this.mapInput.center.lat, this.mapInput.center.lng], 13);
@@ -43,10 +54,6 @@ export class MapComponent implements OnInit {
 
     this.mapInput.locations
       .forEach(value => {
-        L.popup()
-          .setLatLng(value)
-          .setContent('Area of John Doe')
-          .openOn(map);
         L.circle(value, {
           color: 'red',
           fillColor: '#f03',
@@ -54,5 +61,19 @@ export class MapComponent implements OnInit {
           radius: 500
         }).addTo(map);
       });
+    this.drawLines(this.mapInput.locations, map);
+  }
+
+  public drawLines(locations: ITranslocation[], map: L.Map) {
+    if (locations.length < 2) {
+      throw Error('Need at least 2 locations');
+    }
+    const latlngs = [];
+    for (let i = 0; i < locations.length-1; i++) {
+      const firstLocation = locations[i];
+      const secondLocation = locations[i + 1];
+      latlngs.push([firstLocation, secondLocation]);
+    }
+    L.polyline(latlngs, {color: 'red'}).addTo(map);
   }
 }
