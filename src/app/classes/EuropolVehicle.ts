@@ -1,4 +1,4 @@
 interface EuropolVehicle {
-  id: string;
-  country: string;
+  serialNumber: string;
+  originCountry: string;
 }

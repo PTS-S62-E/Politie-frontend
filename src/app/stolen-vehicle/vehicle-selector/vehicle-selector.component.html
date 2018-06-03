@@ -10,7 +10,7 @@
       (click)="selectVehicle(vehicle)"
       [class.active]="isThisVehicleSelected(vehicle)"
       class="hoverable list-group-item">
-    {{ vehicle.id }} from {{ vehicle.country }}
+    {{ vehicle.serialNumber }} from {{ vehicle.originCountry }}
   </li>
 </ul>
 <div class="col-sm-12" *ngIf="(filteredVehicles | async).length == 0">

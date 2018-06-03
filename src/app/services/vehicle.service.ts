@@ -25,13 +25,14 @@ export class VehicleService {
     return this.httpClient.get(`${this.backendLocation}${id}`);
   }
 
-  public addStolenVehicle(id: string) {
+  public addStolenVehicle(serialNumber: string) {
     return this.httpClient
       .post(
         this.backendLocation,
         {
-          id: id,
-          country: 'FI'
+          serialNumber: serialNumber,
+          originCountry: 'FI',
+          HashedLicensePlate: ''
         })
       .subscribe(newVeh => {
         const v = this._vehicles.getValue();
@@ -40,11 +41,11 @@ export class VehicleService {
       });
   }
 
-  public removeStolenVehicle(id: string) {
-    return this.httpClient.delete(`${this.backendLocation}${id}`)
+  public removeStolenVehicle(serialNumber: string) {
+    return this.httpClient.delete(`${this.backendLocation}${serialNumber}`)
       .subscribe(_ => {
         const vehicles = this._vehicles.getValue() as EuropolVehicle[];
-        const newVal = vehicles.filter(d => d.id !== id);
+        const newVal = vehicles.filter(d => d.serialNumber !== serialNumber);
         this._vehicles.next(newVal);
       });
   }

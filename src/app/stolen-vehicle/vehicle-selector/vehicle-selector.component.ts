@@ -30,12 +30,12 @@ export class VehicleSelectorComponent implements OnInit {
   }
 
   public executeSearch(e: Event) {
+    e.preventDefault();
     this.vehicles.subscribe(vehicles => {
-      const filteredVehicles = vehicles.filter(v => this.searchQuery === '' || (v.id.toLowerCase().indexOf(this.searchQuery.toLowerCase()) !== -1));
+      const filteredVehicles = vehicles.filter(v => this.searchQuery === '' || (v.serialNumber.toLowerCase().indexOf(this.searchQuery.toLowerCase()) !== -1));
       console.log(`Search found ${filteredVehicles.length} for query ${this.searchQuery}`);
       this._filteredVehicles.next(filteredVehicles);
     });
-    e.preventDefault();
     console.log('Prevented default');
   }
 
@@ -48,7 +48,7 @@ export class VehicleSelectorComponent implements OnInit {
       this.selectedVehicle !== null &&
       vehicle !== undefined &&
       vehicle !== null &&
-      this.selectedVehicle.id === vehicle.id;
+      this.selectedVehicle.serialNumber === vehicle.serialNumber;
   }
 
   public selectVehicle(vehicle: EuropolVehicle) {
@@ -61,3 +61,4 @@ export class VehicleSelectorComponent implements OnInit {
   }
 
 }
+

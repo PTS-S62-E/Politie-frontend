@@ -17,6 +17,6 @@ export class VehicleViewComponent implements OnInit {
   }
 
   markFound() {
-    this.vehicleService.removeStolenVehicle(this.vehicle.id);
+    this.vehicleService.removeStolenVehicle(this.vehicle.serialNumber);
   }
 }
