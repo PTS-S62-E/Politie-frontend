@@ -1,5 +1,7 @@
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {BehaviorSubject} from 'rxjs/BehaviorSubject';
+import {Observable} from 'rxjs/Observable';
+import {VehicleService} from '../../services/vehicle.service';
 
 @Component({
   selector: 'app-vehicle-selector',
@@ -9,24 +11,36 @@ import {BehaviorSubject} from 'rxjs/BehaviorSubject';
 export class VehicleSelectorComponent implements OnInit {
 
   @Input()
-  public vehicles: EuropolVehicle[] = [];
-  public filteredVehicles: EuropolVehicle[] = [];
+  public vehicles: Observable<EuropolVehicle[]>;
+
+  private _filteredVehicles = new BehaviorSubject([]);
+  public filteredVehicles = this._filteredVehicles.asObservable();
+
   @Output()
   public vehicleSelected = new EventEmitter<EuropolVehicle>();
-  public searchQuery = new BehaviorSubject('').asObservable();
+  public searchQuery = '';
   public selectedVehicle: EuropolVehicle;
   private _selectedVehicle = new BehaviorSubject<EuropolVehicle>(null);
 
-  constructor() {
+  constructor(private vehicleService: VehicleService) {
   }
 
   ngOnInit() {
-    this.searchQuery.subscribe(query => {
-      this.filteredVehicles = this.vehicles.filter(vehicle => {
-        return vehicle.id.toLowerCase().indexOf(query.toLowerCase()) !== -1;
-      });
+    this.vehicles.subscribe(v => this._filteredVehicles.next(v));
+  }
+
+  public executeSearch(e: Event) {
+    this.vehicles.subscribe(vehicles => {
+      const filteredVehicles = vehicles.filter(v => this.searchQuery === '' || (v.id.toLowerCase().indexOf(this.searchQuery.toLowerCase()) !== -1));
+      console.log(`Search found ${filteredVehicles.length} for query ${this.searchQuery}`);
+      this._filteredVehicles.next(filteredVehicles);
     });
-    this.filteredVehicles = this.vehicles;
+    e.preventDefault();
+    console.log('Prevented default');
+  }
+
+  public markStolen() {
+    this.vehicleService.addStolenVehicle(this.searchQuery);
   }
 
   public isThisVehicleSelected(vehicle: EuropolVehicle) {

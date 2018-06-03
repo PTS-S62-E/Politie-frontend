@@ -14,8 +14,10 @@ export class VehicleService {
   }
 
   public getVehicles() {
-    this.httpClient.get(this.backendLocation).subscribe(data => {
-      this._vehicles.next(data as EuropolVehicle[]);
+    return this.httpClient.get(this.backendLocation).subscribe(data => {
+      const vehicles = data as EuropolVehicle[];
+      console.log(vehicles);
+      this._vehicles.next(vehicles);
     });
   }
 
