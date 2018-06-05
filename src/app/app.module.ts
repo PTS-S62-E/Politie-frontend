@@ -15,6 +15,7 @@ import {HTTP_INTERCEPTORS, HttpClient, HttpClientModule} from '@angular/common/h
 import {LoginService} from './services/login.service';
 import {ConfigService} from './services/config.service';
 import {MapComponent} from './map/map/map.component';
+import {VehicleinfoService} from './services/vehicleinfo.service';
 
 const appRoutes: Routes = [
   {path: 'stolen-vehicle', component: StolenVehicleComponent},
@@ -51,7 +52,8 @@ const appRoutes: Routes = [
       multi: true
     },
     LoginService,
-    ConfigService
+    ConfigService,
+    VehicleinfoService
   ],
   bootstrap: [AppComponent]
 })

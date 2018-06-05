@@ -1,12 +1,18 @@
 <div class="card" *ngIf="vehicle !== undefined && selectedVehicle !== null">
   <div class="card-body">
-    <h5 class="card-title">{{ vehicle.serialNumber }} from {{ vehicle.originCountry }}</h5>
+    <h5 class="card-title">{{ vehicle.getValue().licensePlate }} from {{ vehicle.getValue().originCountry }}</h5>
     <div class="card-text">
+      <span class="sub-text">Serial number: {{ vehicle.getValue().serialNumber }}</span>
       <hr/>
+      <h5>More information</h5>
+
+      <ul class="list-group list-group-flush">
+        <li class="list-group-item">Type: {{ vehicleInfo.type }}</li>
+        <li class="list-group-item">Category: {{ vehicleInfo.category }}</li>
+        <li class="list-group-item">Country code: {{ vehicleInfo.countryCode }}</li>
+      </ul>
 
       <div class="btn btn-success" (click)="markFound()">Mark found</div>
-
-      <hr/>
     </div>
   </div>
 </div>

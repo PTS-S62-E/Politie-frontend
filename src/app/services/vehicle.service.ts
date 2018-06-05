@@ -26,14 +26,13 @@ export class VehicleService {
     return this.httpClient.get(`${this.backendLocation}${id}`);
   }
 
-  public addStolenVehicle(serialNumber: string) {
+  public addStolenVehicle(licensePlate: string) {
     return this.httpClient
       .post(
         this.backendLocation,
-        {
-          serialNumber: serialNumber,
+        <EuropolVehicle> {
           originCountry: 'FI',
-          HashedLicensePlate: ''
+          licensePlate: licensePlate
         })
       .subscribe(newVeh => {
         const v = this._vehicles.getValue();

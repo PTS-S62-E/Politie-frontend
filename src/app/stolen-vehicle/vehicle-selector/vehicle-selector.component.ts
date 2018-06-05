@@ -32,7 +32,7 @@ export class VehicleSelectorComponent implements OnInit {
   public executeSearch(e: Event) {
     e.preventDefault();
     this.vehicles.subscribe(vehicles => {
-      const filteredVehicles = vehicles.filter(v => this.searchQuery === '' || (v.serialNumber.toLowerCase().indexOf(this.searchQuery.toLowerCase()) !== -1));
+      const filteredVehicles = vehicles.filter(v => this.searchQuery === '' || (v.licensePlate.toLowerCase().indexOf(this.searchQuery.toLowerCase()) !== -1));
       console.log(`Search found ${filteredVehicles.length} for query ${this.searchQuery}`);
       this._filteredVehicles.next(filteredVehicles);
     });
