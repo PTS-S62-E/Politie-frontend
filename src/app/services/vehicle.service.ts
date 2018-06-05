@@ -1,11 +1,12 @@
 import {Injectable} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
 import {BehaviorSubject} from 'rxjs/BehaviorSubject';
+import {environment} from '../../environments/environment';
 
 @Injectable()
 export class VehicleService {
 
-  private backendLocation = 'http://localhost:8080/Backend-Politie/api/vehicles/stolen/';
+  private backendLocation = environment.baseUrl + '/vehicles/stolen/';
 
   private _vehicles = new BehaviorSubject([]);
   public vehicles = this._vehicles.asObservable();
