@@ -1,4 +1,5 @@
 import {Injectable} from '@angular/core';
+import {environment} from '../../environments/environment';
 
 @Injectable()
 export class ConfigService {
@@ -7,7 +8,7 @@ export class ConfigService {
   }
 
   public getAdministrationEndpoint() {
-    return 'http://localhost:8080/rekening-administratie';
+    return environment.administrationUrl;
   }
 
 }

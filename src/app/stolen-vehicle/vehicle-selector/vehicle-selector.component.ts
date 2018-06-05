@@ -1,7 +1,7 @@
-import {Component, EventEmitter, OnInit, Output} from '@angular/core';
-import {VehicleService} from '../../services/vehicle.service';
-import {Vehicle} from '../../classes/Vehicle';
+import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {BehaviorSubject} from 'rxjs/BehaviorSubject';
+import {Observable} from 'rxjs/Observable';
+import {VehicleService} from '../../services/vehicle.service';
 
 @Component({
   selector: 'app-vehicle-selector',
@@ -10,27 +10,48 @@ import {BehaviorSubject} from 'rxjs/BehaviorSubject';
 })
 export class VehicleSelectorComponent implements OnInit {
 
-  public selectedVehicle: Vehicle;
-  @Output()
-  public vehicleSelected: EventEmitter<Vehicle> = new EventEmitter<Vehicle>();
-  private _selectedVehicle: BehaviorSubject<Vehicle> = new BehaviorSubject<Vehicle>(null);
-  public readonly $selectedVehicle = this._selectedVehicle.asObservable();
+  @Input()
+  public vehicles: Observable<EuropolVehicle[]>;
 
-  constructor(public vehicleService: VehicleService) {
+  private _filteredVehicles = new BehaviorSubject([]);
+  public filteredVehicles = this._filteredVehicles.asObservable();
+
+  @Output()
+  public vehicleSelected = new EventEmitter<EuropolVehicle>();
+  public searchQuery = '';
+  public selectedVehicle: EuropolVehicle;
+  private _selectedVehicle = new BehaviorSubject<EuropolVehicle>(null);
+
+  constructor(private vehicleService: VehicleService) {
   }
 
   ngOnInit() {
+    this.vehicles.subscribe(v => this._filteredVehicles.next(v));
   }
 
-  public isThisVehicleSelected(vehicle: Vehicle) {
+  public executeSearch(e: Event) {
+    e.preventDefault();
+    this.vehicles.subscribe(vehicles => {
+      const filteredVehicles = vehicles.filter(v => this.searchQuery === '' || (v.licensePlate.toLowerCase().indexOf(this.searchQuery.toLowerCase()) !== -1));
+      console.log(`Search found ${filteredVehicles.length} for query ${this.searchQuery}`);
+      this._filteredVehicles.next(filteredVehicles);
+    });
+    console.log('Prevented default');
+  }
+
+  public markStolen() {
+    this.vehicleService.addStolenVehicle(this.searchQuery);
+  }
+
+  public isThisVehicleSelected(vehicle: EuropolVehicle) {
     return this.selectedVehicle !== undefined &&
       this.selectedVehicle !== null &&
       vehicle !== undefined &&
       vehicle !== null &&
-      this.selectedVehicle.hardwareSn === vehicle.hardwareSn;
+      this.selectedVehicle.serialNumber === vehicle.serialNumber;
   }
 
-  public selectVehicle(vehicle: Vehicle) {
+  public selectVehicle(vehicle: EuropolVehicle) {
     this.selectedVehicle = vehicle;
     this._selectedVehicle.next(vehicle);
 
@@ -40,3 +61,4 @@ export class VehicleSelectorComponent implements OnInit {
   }
 
 }
+

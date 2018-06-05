@@ -1,43 +1,18 @@
 <div class="card" *ngIf="vehicle !== undefined && selectedVehicle !== null">
   <div class="card-body">
-    <h5 class="card-title">{{ vehicle.brand }} {{ vehicle.type }}</h5>
+    <h5 class="card-title">{{ vehicle.getValue().licensePlate }} from {{ vehicle.getValue().originCountry }}</h5>
     <div class="card-text">
+      <span class="sub-text">Serial number: {{ vehicle.getValue().serialNumber }}</span>
       <hr/>
+      <h5>More information</h5>
 
-      <div class="row">
-        <div class="col-sm-3">Hardware SN</div>
-        <span class="col-sm-4">{{ vehicle.hardwareSn }}</span>
-      </div>
-      <div class="row">
-        <div class="col-sm-3">Kenteken</div>
-        <span class="col-sm-4">{{ vehicle.plate }}</span>
-      </div>
-      <div class="row">
-        <div class="col-sm-3">Gestolen</div>
-        <span class="col-sm-4">{{ vehicle.stolen }}</span>
-      </div>
-
-      <hr/>
-      <h6>Owners</h6>
-      <ul class="list-group">
-        <li *ngFor="let owner of vehicle.owners" class="list-group-item">
-          <span>From {{ owner.from.toDateString() }} to {{ owner.to.toDateString() }}</span>
-          <div class="row">
-            <div class="col-sm-3">Naam</div>
-            <span class="col-sm-9">{{ owner.owner.name }}</span>
-          </div>
-          <div class="row">
-            <div class="col-sm-3">Email</div>
-            <span class="col-sm-9">{{ owner.owner.email }}</span>
-          </div>
-          <div class="row">
-            <div class="col-sm-3">Address</div>
-            <span class="col-sm-9">{{ owner.owner.address}}, {{ owner.owner.city }}</span>
-          </div>
-        </li>
+      <ul class="list-group list-group-flush">
+        <li class="list-group-item">Type: {{ vehicleInfo.type }}</li>
+        <li class="list-group-item">Category: {{ vehicleInfo.category }}</li>
+        <li class="list-group-item">Country code: {{ vehicleInfo.countryCode }}</li>
       </ul>
 
-      <hr/>
+      <div class="btn btn-success" (click)="markFound()">Mark found</div>
     </div>
   </div>
 </div>

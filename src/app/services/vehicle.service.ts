@@ -1,97 +1,52 @@
 import {Injectable} from '@angular/core';
-import {Vehicle} from '../classes/Vehicle';
-import {Observable} from 'rxjs/Observable';
-import moment = require('moment');
+import {HttpClient} from '@angular/common/http';
+import {BehaviorSubject} from 'rxjs/BehaviorSubject';
+import {environment} from '../../environments/environment';
 
 @Injectable()
 export class VehicleService {
 
-  constructor() {
+  private backendLocation = environment.baseUrl + '/vehicles/stolen/';
+
+  private _vehicles = new BehaviorSubject([]);
+  public vehicles = this._vehicles.asObservable();
+
+  constructor(private httpClient: HttpClient) {
   }
 
-  public static getMock() {
-    return [
-      <Vehicle> {
-        brand: 'Kit',
-        category: 'Superzware raceauto jonge!',
-        hardwareSn: '1234-abcd-1234',
-        plate: '12-AB-34',
-        type: 'F5000',
-        stolen: false,
-        owners: [
-          {
-            from: moment().subtract(3, 'years').toDate(),
-            to: moment().toDate(),
-            owner: {
-              address: 'TestStreet 123',
-              city: 'TestCity',
-              email: 'someone@email.com',
-              name: 'Jeff',
-              password: 'SuperSecretPassword'
-            }
-          }
-        ]
-      },
-      <Vehicle> {
-        brand: 'Osake',
-        category: 'Kleine waggie!',
-        hardwareSn: '2345-bcde-2345',
-        plate: '34-ZX-69',
-        type: 'FI2',
-        stolen: true,
-        owners: [
-          {
-            from: moment().subtract(1, 'years').toDate(),
-            to: moment().toDate(),
-            owner: {
-              address: 'TestStreet 123',
-              city: 'TestCity',
-              email: 'someone@email.com',
-              name: 'Jeff',
-              password: 'SuperSecretPassword'
-            }
-          }
-        ]
-      },
-      <Vehicle> {
-        brand: 'Suzuki',
-        category: 'Normale waggie!',
-        hardwareSn: '5678-abcd,5678',
-        plate: '69-AB-420',
-        type: 'S23',
-        stolen: false,
-        owners: [
-          {
-            from: moment().subtract(1, 'years').toDate(),
-            to: moment().subtract(4, 'days').toDate(),
-            owner: {
-              address: 'TestStreet 123',
-              city: 'TestCity',
-              email: 'someone@email.com',
-              name: 'Jeff',
-              password: 'SuperSecretPassword'
-            }
-          },
-          {
-            from: moment().subtract(3, 'days').toDate(),
-            to: moment().toDate(),
-            owner: {
-              address: 'AnotherStreet 123',
-              city: 'AnotherCity',
-              email: 'someoneelse@email.com',
-              name: 'Deur',
-              password: 'Password'
-            }
-          }
-        ]
-      }
-    ];
-  }
-
-  public getVehicles(): Observable<Vehicle[]> {
-    return new Observable((observer) => {
-      observer.next(VehicleService.getMock());
-      observer.complete();
+  public getVehicles() {
+    return this.httpClient.get(this.backendLocation).subscribe(data => {
+      const vehicles = data as EuropolVehicle[];
+      console.log(vehicles);
+      this._vehicles.next(vehicles);
     });
+  }
+
+  public searchForStolenVehicle(id: string) {
+    return this.httpClient.get(`${this.backendLocation}${id}`);
+  }
+
+  public addStolenVehicle(licensePlate: string) {
+    return this.httpClient
+      .post(
+        this.backendLocation,
+        <EuropolVehicle> {
+          originCountry: 'FI',
+          licensePlate: licensePlate
+        })
+      .subscribe(newVeh => {
+        const v = this._vehicles.getValue();
+        v.push(newVeh);
+        this._vehicles.next(v);
+      });
+  }
+
+  public removeStolenVehicle(serialNumber: string) {
+    return this.httpClient.delete(`${this.backendLocation}${serialNumber}`)
+      .subscribe(_ => {
+        const vehicles = this._vehicles.getValue() as EuropolVehicle[];
+        const newVal = vehicles.filter(d => d.serialNumber !== serialNumber);
+        this._vehicles.next(newVal);
+      });
   }
 }

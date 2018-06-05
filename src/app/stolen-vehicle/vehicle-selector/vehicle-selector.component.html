@@ -1,13 +1,19 @@
 <form>
-  <div class="form-group">
-    <input type="text" class="form-control" placeholder="Zoeken"/>
-  </div>
+  <form (submit)="executeSearch($event)">
+    <div class="form-group">
+      <input type="text" class="form-control" name="searchQuery" [(ngModel)]="searchQuery" placeholder="Zoeken"/>
+    </div>
+  </form>
 </form>
-<ul class="list-group">
-  <li *ngFor="let vehicle of vehicleService.getVehicles() | async"
+<ul class="list-group" *ngIf="(filteredVehicles | async).length > 0">
+  <li *ngFor="let vehicle of filteredVehicles | async"
       (click)="selectVehicle(vehicle)"
       [class.active]="isThisVehicleSelected(vehicle)"
       class="hoverable list-group-item">
-    {{ vehicle.brand }} {{ vehicle.type }}
+    {{ vehicle.licensePlate }} from {{ vehicle.originCountry }}
   </li>
 </ul>
+<div class="col-sm-12" *ngIf="(filteredVehicles | async).length == 0">
+  <h5>Vehicle {{ searchQuery }} not found</h5>
+  <div class="btn btn-danger" (click)="markStolen()">Mark {{ searchQuery }} stolen</div>
+</div>
