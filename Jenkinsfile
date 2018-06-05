@@ -11,7 +11,7 @@ pipeline {
      stage('Deploy') {
        steps {
          nodejs(nodeJSInstallationName: 'NodeJS 9.11.1') {
-           sh 'ng serve --host 0.0.0.0'
+           sh 'ng serve --host 0.0.0.0 --env=test'
          }
        }
      }
