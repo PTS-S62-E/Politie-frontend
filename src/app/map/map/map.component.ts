@@ -1,24 +1,37 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {Component, Input, OnDestroy, OnInit} from '@angular/core';
 import * as L from 'leaflet';
 import {MapInput} from '../../classes/MapInput';
 import {ITranslocation} from '../../classes/Translocation';
+import {Subscription} from 'rxjs/Subscription';
+import { Message } from '@stomp/stompjs'
+import {Observable} from 'rxjs/Observable';
+import {StompService} from '@stomp/ng2-stompjs';
+import {environment} from '../../../environments/environment';
 
 @Component({
   selector: 'app-map',
   templateUrl: './map.component.html',
   styleUrls: ['./map.component.css']
 })
-export class MapComponent implements OnInit {
+export class MapComponent implements OnInit, OnDestroy {
+
+  /**
+   * RabbitMQ vars
+   */
+  private trackingSubscription: Subscription;
+  private trackingReceivedMessage: Observable<Message>;
+  public isSubscribedToTrackingQueue: boolean;
 
   @Input()
   public mapInput: MapInput;
 
   public visible: boolean = true;
 
-  constructor() {
+  constructor(private _stompService: StompService) {
   }
 
   ngOnInit() {
+    this.isSubscribedToTrackingQueue = false;
     if (this.mapInput == null) {
       this.mapInput = new MapInput();
       this.mapInput.center = {
@@ -62,6 +75,37 @@ export class MapComponent implements OnInit {
         }).addTo(map);
       });
     this.drawLines(this.mapInput.locations, map);
+  }
+
+  ngOnDestroy() {
+    this.unsubscribe();
+  }
+
+  subscribe() {
+    if (this.isSubscribedToTrackingQueue) {
+      return;
+    }
+
+    this.trackingReceivedMessage = this._stompService.subscribe(environment.trackingQueueChannel);
+    this.trackingSubscription = this.trackingReceivedMessage.subscribe(this.onTrackingMessage);
+    this.isSubscribedToTrackingQueue = true;
+  }
+
+  unsubscribe() {
+    if (!this.isSubscribedToTrackingQueue) {
+      return;
+    }
+
+    // There are two subscriptions - one created explicitly, the other created in the template by use of 'async'
+    this.trackingSubscription.unsubscribe();
+    this.trackingSubscription = null;
+    this.trackingReceivedMessage = null;
+
+    this.isSubscribedToTrackingQueue = false;
+  }
+
+  onTrackingMessage = (message: Message) => {
+    console.log('Tracking message received!');
   }
 
   public drawLines(locations: ITranslocation[], map: L.Map) {

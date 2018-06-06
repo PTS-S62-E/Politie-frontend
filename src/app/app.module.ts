@@ -15,6 +15,21 @@ import {HTTP_INTERCEPTORS, HttpClient, HttpClientModule} from '@angular/common/h
 import {LoginService} from './services/login.service';
 import {ConfigService} from './services/config.service';
 import {MapComponent} from './map/map/map.component';
+import { StompConfig, StompService } from '@stomp/ng2-stompjs';
+
+const stompConfig = {
+  url: 'ws://192.168.24.102:15674/ws',
+  headers: {
+    login: 'PTS-S62-E',
+    passcode: 'proftaak'
+  },
+  heartbeat_in: 0, // Typical value 0 - disabled
+  heartbeat_out: 20000, // Typical value 20000 - every 20 seconds
+  reconnect_delay: 5000,
+
+  // Will log diagnostics on console
+  debug: true
+};
 
 const appRoutes: Routes = [
   {path: 'stolen-vehicle', component: StolenVehicleComponent},
@@ -51,7 +66,11 @@ const appRoutes: Routes = [
       multi: true
     },
     LoginService,
-    ConfigService
+    ConfigService,
+    StompService,
+    {
+      provide: StompConfig, useValue: stompConfig
+    }
   ],
   bootstrap: [AppComponent]
 })
