@@ -9,6 +9,8 @@ import {StompService} from '@stomp/ng2-stompjs';
 import {environment} from '../../../environments/environment';
 import {TrackingDto} from '../../classes/TrackingDto';
 import {TranslocationDto} from '../../classes/TranslocationDto';
+import {ActivatedRoute} from '@angular/router';
+import {VehicleService} from '../../services/vehicle.service';
 
 @Component({
   selector: 'app-map',
@@ -20,6 +22,9 @@ export class MapComponent implements OnInit, OnDestroy {
   private lastReceivedTranslocationDto: TranslocationDto = undefined;
   private map: L.Map;
 
+  private licensePlate = '';
+  private isTracking = false;
+
   /**
    * RabbitMQ vars
    */
@@ -30,35 +35,14 @@ export class MapComponent implements OnInit, OnDestroy {
   @Input()
   public mapInput: MapInput;
 
-
-  public visible: boolean = true;
-
-  constructor(private _stompService: StompService) {
+  constructor(private _stompService: StompService, private route: ActivatedRoute, private vehicleService: VehicleService) {
+    this.route.params.subscribe(params => {
+      this.licensePlate = params['licenseplate'];
+    });
   }
 
   ngOnInit() {
     this.isSubscribedToTrackingQueue = false;
-    if (this.mapInput == null) {
-      this.mapInput = new MapInput();
-      this.mapInput.center = {
-        lat: 51.4508747,
-        lng: 5.4781492
-      };
-      this.mapInput.locations.push({
-        lat: 51.4508747,
-        lng: 5.4781492
-      });
-
-      this.mapInput.locations.push({
-        lat: 51.5508747,
-        lng: 5.5781492
-      });
-
-      this.mapInput.locations.push({
-        lat: 51.6508747,
-        lng: 5.681492
-      });
-    }
 
     this.map = L.map('leafletmap').setView([64.704413, 26.851953], 5);
 
@@ -69,19 +53,6 @@ export class MapComponent implements OnInit, OnDestroy {
       id: 'mapbox.streets',
       accessToken: 'pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpejY4NXVycTA2emYycXBndHRqcmZ3N3gifQ.rJcFIG214AriISLbB6B5aw'
     }).addTo(this.map);
-
-    // this.mapInput.locations
-    //   .forEach(value => {
-    //     L.circle(value, {
-    //       color: 'red',
-    //       fillColor: '#f03',
-    //       fillOpacity: 0.5,
-    //       radius: 500
-    //     }).addTo(this.map);
-    //   });
-    // this.drawLines(this.mapInput.locations, this.map);
-
-    this.subscribe();
   }
 
   ngOnDestroy() {
@@ -96,6 +67,8 @@ export class MapComponent implements OnInit, OnDestroy {
     this.trackingReceivedMessage = this._stompService.subscribe(environment.trackingQueueChannel);
     this.trackingSubscription = this.trackingReceivedMessage.subscribe(this.onTrackingMessage);
     this.isSubscribedToTrackingQueue = true;
+
+    console.log('Subscribed to RabbitMQ');
   }
 
   unsubscribe() {
@@ -104,11 +77,13 @@ export class MapComponent implements OnInit, OnDestroy {
     }
 
     // There are two subscriptions - one created explicitly, the other created in the template by use of 'async'
-    // this.trackingSubscription.unsubscribe();
-    // this.trackingSubscription = null;
-    // this.trackingReceivedMessage = null;
-    //
-    // this.isSubscribedToTrackingQueue = false;
+    this.trackingSubscription.unsubscribe();
+    this.trackingSubscription = null;
+    this.trackingReceivedMessage = null;
+
+    this.isSubscribedToTrackingQueue = false;
+
+    console.log('Unsubscribed from RabbitMQ');
   }
 
   onTrackingMessage = (message: Message) => {
@@ -144,5 +119,16 @@ export class MapComponent implements OnInit, OnDestroy {
 
       this.lastReceivedTranslocationDto = location;
     }
+  }
+
+  public startTracking() {
+    this.vehicleService.searchForStolenVehicle(this.licensePlate);
+    this.subscribe();
+    this.isTracking = true;
+  }
+
+  public stopTracking() {
+    this.unsubscribe();
+    this.isTracking = false;
   }
 }

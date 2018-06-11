@@ -4,6 +4,8 @@
     <div id="leafletmap"></div>
   </div>
   <div class="col-sm-4">
-    <p>Track a vehicle</p>
+    Do you want to start tracking the vehicle with license plate <b>{{ licensePlate }}</b>?<br>
+    <span *ngIf="isTracking"><button class="btn btn-danger" (click)="stopTracking()">Stop Tracking</button></span>
+    <span *ngIf="!isTracking"><button class="btn btn-success" (click)="startTracking()">Start Tracking</button></span>
   </div>
 </div>

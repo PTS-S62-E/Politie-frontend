@@ -44,6 +44,6 @@ export class VehicleViewComponent implements AfterContentInit {
   }
 
   liveTrackVehicle() {
-    this.router.navigate(['stolen-vehicle/map/?vehicle=' + JSON.stringify(this.vehicle.getValue())]);
+    this.router.navigate(['stolen-vehicle/map', this.vehicle.getValue().licensePlate]);
   }
 }
