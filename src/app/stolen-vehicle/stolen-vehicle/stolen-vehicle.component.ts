@@ -1,5 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {VehicleService} from '../../services/vehicle.service';
+import {BehaviorSubject} from 'rxjs/BehaviorSubject';
 
 @Component({
   selector: 'app-stolen-vehicle',
@@ -8,7 +9,7 @@ import {VehicleService} from '../../services/vehicle.service';
 })
 export class StolenVehicleComponent implements OnInit {
 
-  public selectedVehicle: EuropolVehicle;
+  public selectedVehicle = new BehaviorSubject({});
 
   constructor(public vehicleService: VehicleService) {
   }
@@ -18,7 +19,7 @@ export class StolenVehicleComponent implements OnInit {
   }
 
   public setSelectedVehicle(vehicle: EuropolVehicle) {
-    this.selectedVehicle = vehicle;
+    this.selectedVehicle.next(vehicle);
   }
 
 }

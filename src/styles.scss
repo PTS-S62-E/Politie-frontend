@@ -1,6 +1,17 @@
 /* You can add global styles to this file, and also import other style files */
 @import "~tether/src/css/tether";
 @import "~bootstrap/scss/bootstrap.scss";
+@import "~bootstrap-material-design/scss/bootstrap-material-design.scss";
+
+.card-title {
+  @extend .card-title;
+
+  color: #2196FB;
+}
+
+.sub-text {
+  color: #AAA;
+}
 
 .hoverable {
   &:hover {
