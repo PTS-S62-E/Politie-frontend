@@ -12,9 +12,10 @@ import {Router} from '@angular/router';
 export class VehicleViewComponent implements AfterContentInit {
 
   @Input()
-  vehicle: BehaviorSubject<EuropolVehicle>;
+  public vehicle: BehaviorSubject<EuropolVehicle> = new BehaviorSubject(null);
+  public vehicleInfo: BackendVehicleInfo = null;
 
-  public vehicleInfo: BackendVehicleInfo | any = {};
+  private isLoading = true;
 
   constructor(private vehicleService: VehicleService, private vehicleInfoService: VehicleinfoService, private router: Router) {
   }

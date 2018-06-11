@@ -1,7 +1,10 @@
-<div class="card" *ngIf="vehicle !== undefined && selectedVehicle !== null">
+<div class="card" *ngIf="vehicle !== undefined && selectedVehicle !== null && vehicleInfo != null">
   <div class="card-body">
     <h5 class="card-title">{{ vehicle.getValue().licensePlate }} from {{ vehicle.getValue().originCountry }}</h5>
     <div class="card-text">
+      <div *ngIf="isLoading">
+
+      </div>
       <span class="sub-text">Serial number: {{ vehicle.getValue().serialNumber }}</span>
       <hr/>
       <h5>More information</h5>
