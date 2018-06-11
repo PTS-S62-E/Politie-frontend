@@ -2,6 +2,7 @@ import {AfterContentInit, Component, Input} from '@angular/core';
 import {VehicleService} from '../../services/vehicle.service';
 import {VehicleinfoService} from '../../services/vehicleinfo.service';
 import {BehaviorSubject} from 'rxjs/BehaviorSubject';
+import {Router} from '@angular/router';
 
 @Component({
   selector: 'app-vehicle-view',
@@ -15,7 +16,7 @@ export class VehicleViewComponent implements AfterContentInit {
 
   public vehicleInfo: BackendVehicleInfo | any = {};
 
-  constructor(private vehicleService: VehicleService, private vehicleInfoService: VehicleinfoService) {
+  constructor(private vehicleService: VehicleService, private vehicleInfoService: VehicleinfoService, private router: Router) {
   }
 
   ngAfterContentInit() {
@@ -39,5 +40,9 @@ export class VehicleViewComponent implements AfterContentInit {
 
   markFound() {
     this.vehicleService.removeStolenVehicle(this.vehicle.getValue().serialNumber);
+  }
+
+  liveTrackVehicle() {
+    this.router.navigate(['stolen-vehicle/map/?vehicle=' + JSON.stringify(this.vehicle.getValue())]);
   }
 }

@@ -35,7 +35,7 @@ const stompConfig = {
 
 const appRoutes: Routes = [
   {path: 'stolen-vehicle', component: StolenVehicleComponent},
-  {path: 'stolen-vehicle/map', component: MapComponent},
+  {path: 'stolen-vehicle/map/:licenseplate', component: MapComponent},
   {path: '', component: HomepageComponent}
 ];
 

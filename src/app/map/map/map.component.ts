@@ -60,7 +60,7 @@ export class MapComponent implements OnInit, OnDestroy {
       });
     }
 
-    this.map = L.map('leafletmap').setView([this.mapInput.center.lat, this.mapInput.center.lng], 13);
+    this.map = L.map('leafletmap').setView([64.704413, 26.851953], 5);
 
     L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token={accessToken}', {
       attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors,' +
