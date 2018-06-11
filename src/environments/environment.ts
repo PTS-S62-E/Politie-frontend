@@ -6,5 +6,6 @@
 export const environment = {
   production: false,
   baseUrl: 'http://localhost:8080/Backend-Politie/api',
-  administrationUrl: 'http://localhost:8080/Rekening-Administratie/api'
+  administrationUrl: 'http://localhost:8080/Rekening-Administratie/api',
+  trackingQueueChannel: '/exchange/REKENINGRIJDEN_EXCHANGE/fi.police.trackingUpdate'
 };
