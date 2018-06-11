@@ -17,6 +17,22 @@ import {ConfigService} from './services/config.service';
 import {MapComponent} from './map/map/map.component';
 import {VehicleinfoService} from './services/vehicleinfo.service';
 
+import { StompConfig, StompService } from '@stomp/ng2-stompjs';
+
+const stompConfig = {
+  url: 'ws://teunwillems.nl:15674/ws',
+  headers: {
+    login: 'guest',
+    passcode: 'guest'
+  },
+  heartbeat_in: 0, // Typical value 0 - disabled
+  heartbeat_out: 20000, // Typical value 20000 - every 20 seconds
+  reconnect_delay: 5000,
+
+  // Will log diagnostics on console
+  debug: true
+};
+
 const appRoutes: Routes = [
   {path: 'stolen-vehicle', component: StolenVehicleComponent},
   {path: 'stolen-vehicle/map', component: MapComponent},
@@ -53,6 +69,10 @@ const appRoutes: Routes = [
     },
     LoginService,
     ConfigService,
+    StompService,
+    {
+      provide: StompConfig, useValue: stompConfig
+    },
     VehicleinfoService
   ],
   bootstrap: [AppComponent]
