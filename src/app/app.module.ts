@@ -18,10 +18,10 @@ import {MapComponent} from './map/map/map.component';
 import { StompConfig, StompService } from '@stomp/ng2-stompjs';
 
 const stompConfig = {
-  url: 'ws://192.168.24.102:15674/ws',
+  url: 'ws://teunwillems.nl:15674/ws',
   headers: {
-    login: 'PTS-S62-E',
-    passcode: 'proftaak'
+    login: 'guest',
+    passcode: 'guest'
   },
   heartbeat_in: 0, // Typical value 0 - disabled
   heartbeat_out: 20000, // Typical value 20000 - every 20 seconds
