@@ -35,12 +35,21 @@ export class HistoryMapComponent implements OnInit {
       this.translocationService.getTranslocations(this.licensePlate, this.createValidDate(this.startDate), this.createValidDate(this.endDate))
         .subscribe(result => {
           this.administrationDto = result;
-          this.drawHistory();
+          this.drawHistory(result);
+          this.setViewToLastTranslocation(result);
         });
     }
     else {
       this.warning = 'end date should be bigger than start date.'
     }
+  }
+
+  private setViewToLastTranslocation(administrationDto: AdministrationDto) {
+    let jsize = administrationDto.journeys.length;
+    let tsize = administrationDto.journeys[jsize - 1].translocations.length;
+
+    this.map.setView([this.administrationDto.journeys[jsize - 1].translocations[tsize - 1].latitude,
+    this.administrationDto.journeys[jsize - 1].translocations[tsize - 1].longitude], 13);
   }
 
   private compareDates(start: Date, end: Date): Boolean {
@@ -61,11 +70,9 @@ export class HistoryMapComponent implements OnInit {
     return validDate;
   }
 
-  private drawHistory() {
-    console.log('draw history');
-    console.log(this.administrationDto.journeys[1].translocations[1].serialNumber);
+  private drawHistory(administrationDto: AdministrationDto) {
 
-    for (let journey of this.administrationDto.journeys) {
+    for (let journey of administrationDto.journeys) {
       console.log('next journey');
       let color = this.getRandomColor();
       let previousTranslocation = undefined;
@@ -88,32 +95,24 @@ export class HistoryMapComponent implements OnInit {
 
   private draw(location: TranslocationDto, previousTranslocation: TranslocationDto, color: string) {
 
-    if (previousTranslocation === undefined) {
+    if (previousTranslocation !== undefined) {
+      console.log(previousTranslocation.id + "-" + location.id)
+    }
 
-      L.circle([location.latitude, location.longitude], {
-        color: color,
-        fillColor: color,
-        fillOpacity: 0.5,
-        radius: 100
-      }).bindPopup(this.getData(location)).addTo(this.map);
+    L.circle([location.latitude, location.longitude], {
+      color: color,
+      fillColor: color,
+      fillOpacity: 0.5,
+      radius: 10
+    }).bindPopup(this.getData(location)).addTo(this.map);
 
-    } else {
-      // Draw a circle to show where the new location is
-      console.log(location);
-      L.circle([location.latitude, location.longitude], {
-        color: color,
-        fillColor: color,
-        fillOpacity: 0.5,
-        radius: 10,
-      }).bindPopup(this.getData(location)).addTo(this.map);
-
+    if (previousTranslocation !== undefined) {
       // Draw a line between the last and new location
-      console.log(previousTranslocation);
       L.polyline([[previousTranslocation.latitude, previousTranslocation.longitude], [location.latitude, location.longitude]], {
         color: color
       }).bindPopup(this.getData(location)).addTo(this.map);
-
     }
+
   }
 
   private getData(translocationDto: TranslocationDto): string {
@@ -128,7 +127,6 @@ export class HistoryMapComponent implements OnInit {
   private initMap() {
 
     this.mapInput = new MapInput();
-
     this.mapInput.center = {
       lat: 51.4508747,
       lng: 5.4781492
