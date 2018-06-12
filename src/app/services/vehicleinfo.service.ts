@@ -16,10 +16,10 @@ export class VehicleinfoService {
 
   public getVehicleInfo(licensePlate: string): Observable<BackendVehicleInfo> {
     return this.httpClient
-      .get(`${this.backendInfoLocation}${licensePlate}`) as Observable<BackendVehicleInfo>;
+      .get(encodeURI(`${this.backendInfoLocation}${licensePlate}`)) as Observable<BackendVehicleInfo>;
   }
 
   public getVehicleOwnership(licensePlate: string): Observable<VehicleInfoResponse> {
-    return this.httpClient.get(`${this.backendOwnershipLocation}${licensePlate}`) as Observable<VehicleInfoResponse>;
+    return this.httpClient.get(encodeURI(`${this.backendOwnershipLocation}${licensePlate}`)) as Observable<VehicleInfoResponse>;
   }
 }
