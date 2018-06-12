@@ -2,6 +2,8 @@
   <h1>Movement History</h1>
   <h5>Enter two dates and a licenseplate to get the movement history of matching vehicle.</h5>
 
+  <div class="alert"> {{warning}} </div>
+
   <div class="form-group">
     <input type="date" name="startDate" max="3000-12-31" min="1000-01-01" class="form-control" [(ngModel)]="startDate">
     <input type="date" name="endDate" max="3000-12-31" min="1000-01-01" class="form-control" [(ngModel)]="endDate">
