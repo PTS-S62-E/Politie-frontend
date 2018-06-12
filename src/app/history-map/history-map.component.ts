@@ -2,6 +2,10 @@ import { Component, OnInit } from '@angular/core';
 import { TranslocationService } from '../services/translocation.service';
 import { Subscription } from 'rxjs/Subscription';
 import { TranslocationDto } from '../classes/TranslocationDto';
+import * as L from 'leaflet';
+import { JourneyDto } from '../classes/JourneyDto';
+import { MapInput } from '../classes/MapInput';
+import { AdministrationDto } from '../classes/AdministrationDto';
 
 @Component({
   selector: 'app-history-map',
@@ -14,16 +18,11 @@ export class HistoryMapComponent implements OnInit {
   public licensePlate: String;
   public startDate: String;
   public endDate: String;
-  public translocations: TranslocationDto[];
-
-  private subscription: Subscription;
+  public administrationDto: AdministrationDto;
+  private map: L.Map;
+  private mapInput: MapInput;
 
   constructor(private translocationService: TranslocationService) {
-
-    this.subscription = this.translocationService.$translocations.subscribe(translocations => {
-      this.translocations = translocations;
-    });
-
   }
 
   public getHistory() {
@@ -32,10 +31,12 @@ export class HistoryMapComponent implements OnInit {
 
     if (this.compareDates(this.convertToDate(this.startDate),
       this.convertToDate(this.startDate))) {
-      this.translocationService.getTranslocations(
-        this.licensePlate,
-        this.createValidDate(this.startDate),
-        this.createValidDate(this.endDate));
+
+      this.translocationService.getTranslocations(this.licensePlate, this.createValidDate(this.startDate), this.createValidDate(this.endDate))
+        .subscribe(result => {
+          this.administrationDto = result;
+          this.drawHistory();
+        });
     }
     else {
       this.warning = 'end date should be bigger than start date.'
@@ -60,7 +61,106 @@ export class HistoryMapComponent implements OnInit {
     return validDate;
   }
 
+  private drawHistory() {
+    console.log('draw history');
+    console.log(this.administrationDto.journeys[1].translocations[1].serialNumber);
+
+    for (let journey of this.administrationDto.journeys) {
+      console.log('next journey');
+      let color = this.getRandomColor();
+      let previousTranslocation = undefined;
+      console.log(color);
+      for (let translocation of journey.translocations) {
+        this.draw(translocation, previousTranslocation, color);
+        previousTranslocation = translocation;
+      }
+    }
+  }
+
+  private getRandomColor(): string {
+    var letters = '0123456789ABCDEF';
+    var color = '#';
+    for (var i = 0; i < 6; i++) {
+      color += letters[Math.floor(Math.random() * 16)];
+    }
+    return color;
+  }
+
+  private draw(location: TranslocationDto, previousTranslocation: TranslocationDto, color: string) {
+
+    if (previousTranslocation === undefined) {
+
+      L.circle([location.latitude, location.longitude], {
+        color: color,
+        fillColor: color,
+        fillOpacity: 0.5,
+        radius: 100
+      }).bindPopup(this.getData(location)).addTo(this.map);
+
+    } else {
+      // Draw a circle to show where the new location is
+      console.log(location);
+      L.circle([location.latitude, location.longitude], {
+        color: color,
+        fillColor: color,
+        fillOpacity: 0.5,
+        radius: 10,
+      }).bindPopup(this.getData(location)).addTo(this.map);
+
+      // Draw a line between the last and new location
+      console.log(previousTranslocation);
+      L.polyline([[previousTranslocation.latitude, previousTranslocation.longitude], [location.latitude, location.longitude]], {
+        color: color
+      }).bindPopup(this.getData(location)).addTo(this.map);
+
+    }
+  }
+
+  private getData(translocationDto: TranslocationDto): string {
+    return `Vehicle data:
+    translocationId: ${translocationDto.id}
+    serialnumber: ${translocationDto.serialNumber}
+    lat: ${translocationDto.latitude}
+    long: ${translocationDto.longitude}
+    timestamp: ${translocationDto.timestamp}`;
+  }
+
+  private initMap() {
+
+    this.mapInput = new MapInput();
+
+    this.mapInput.center = {
+      lat: 51.4508747,
+      lng: 5.4781492
+    };
+    this.mapInput.locations.push({
+      lat: 51.4508747,
+      lng: 5.4781492
+    });
+
+    this.mapInput.locations.push({
+      lat: 51.5508747,
+      lng: 5.5781492
+    });
+
+    this.mapInput.locations.push({
+      lat: 51.6508747,
+      lng: 5.681492
+    });
+
+    this.map = L.map('leafletmap').setView([this.mapInput.center.lat, this.mapInput.center.lng], 13);
+
+    L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token={accessToken}', {
+      attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors,' +
+        '<a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
+      maxZoom: 18,
+      id: 'mapbox.streets',
+      accessToken: 'pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpejY4NXVycTA2emYycXBndHRqcmZ3N3gifQ.rJcFIG214AriISLbB6B5aw'
+    }).addTo(this.map);
+  }
+
   ngOnInit() {
+    this.initMap();
   }
 
 }
