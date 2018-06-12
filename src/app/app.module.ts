@@ -16,10 +16,9 @@ import {LoginService} from './services/login.service';
 import {ConfigService} from './services/config.service';
 import {MapComponent} from './map/map/map.component';
 import {VehicleinfoService} from './services/vehicleinfo.service';
-
 import { StompConfig, StompService } from '@stomp/ng2-stompjs';
 import {TrackingService} from './services/tracking.service';
-
+import {VehicleCountryPipe} from './filters/vehicle-country.pipe';
 const stompConfig = {
   url: 'ws://teunwillems.nl:15674/ws',
   headers: {
@@ -48,8 +47,8 @@ const appRoutes: Routes = [
     HomepageComponent,
     VehicleSelectorComponent,
     VehicleViewComponent,
-    MapComponent
-    // LoginComponent,
+    MapComponent,
+    VehicleCountryPipe,
   ],
   imports: [
     BrowserModule,

@@ -3,6 +3,7 @@ import {VehicleService} from '../../services/vehicle.service';
 import {VehicleinfoService} from '../../services/vehicleinfo.service';
 import {BehaviorSubject} from 'rxjs/BehaviorSubject';
 import {Router} from '@angular/router';
+import {VehicleInfoResponse} from '../../classes/VehicleInfoResponse';
 
 @Component({
   selector: 'app-vehicle-view',
@@ -14,6 +15,7 @@ export class VehicleViewComponent implements AfterContentInit {
   @Input()
   public vehicle: BehaviorSubject<EuropolVehicle> = new BehaviorSubject(null);
   public vehicleInfo: BackendVehicleInfo = null;
+  public vehicleOwnership: VehicleInfoResponse = null;
 
   private isLoading = true;
 
@@ -35,6 +37,11 @@ export class VehicleViewComponent implements AfterContentInit {
         .getVehicleInfo(vehicle.licensePlate)
         .subscribe((info: BackendVehicleInfo) => {
           this.vehicleInfo = info;
+        });
+      this.vehicleInfoService
+        .getVehicleOwnership(vehicle.licensePlate)
+        .subscribe((info: VehicleInfoResponse) => {
+          this.vehicleOwnership = info;
         });
     });
   }
