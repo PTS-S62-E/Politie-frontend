@@ -18,6 +18,7 @@ import {MapComponent} from './map/map/map.component';
 import {VehicleinfoService} from './services/vehicleinfo.service';
 
 import { StompConfig, StompService } from '@stomp/ng2-stompjs';
+import {TrackingService} from './services/tracking.service';
 
 const stompConfig = {
   url: 'ws://teunwillems.nl:15674/ws',
@@ -73,7 +74,8 @@ const appRoutes: Routes = [
     {
       provide: StompConfig, useValue: stompConfig
     },
-    VehicleinfoService
+    VehicleinfoService,
+    TrackingService
   ],
   bootstrap: [AppComponent]
 })

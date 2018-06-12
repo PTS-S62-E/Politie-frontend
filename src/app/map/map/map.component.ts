@@ -1,7 +1,6 @@
 import {Component, Input, OnDestroy, OnInit} from '@angular/core';
 import * as L from 'leaflet';
 import {MapInput} from '../../classes/MapInput';
-import {ITranslocation, Translocation} from '../../classes/Translocation';
 import {Subscription} from 'rxjs/Subscription';
 import { Message } from '@stomp/stompjs';
 import {Observable} from 'rxjs/Observable';
@@ -10,7 +9,7 @@ import {environment} from '../../../environments/environment';
 import {TrackingDto} from '../../classes/TrackingDto';
 import {TranslocationDto} from '../../classes/TranslocationDto';
 import {ActivatedRoute} from '@angular/router';
-import {VehicleService} from '../../services/vehicle.service';
+import {TrackingService} from '../../services/tracking.service';
 
 @Component({
   selector: 'app-map',
@@ -35,7 +34,7 @@ export class MapComponent implements OnInit, OnDestroy {
   @Input()
   public mapInput: MapInput;
 
-  constructor(private _stompService: StompService, private route: ActivatedRoute, private vehicleService: VehicleService) {
+  constructor(private _stompService: StompService, private route: ActivatedRoute, private trackingService: TrackingService) {
     this.route.params.subscribe(params => {
       this.licensePlate = params['licenseplate'];
     });
@@ -122,12 +121,18 @@ export class MapComponent implements OnInit, OnDestroy {
   }
 
   public startTracking() {
-    this.vehicleService.searchForStolenVehicle(this.licensePlate);
+    this.trackingService.start(this.licensePlate).subscribe(res => {
+      console.log('OK');
+      console.log(res);
+    }, err => {
+      console.log(err);
+    });
     this.subscribe();
     this.isTracking = true;
   }
 
   public stopTracking() {
+    this.trackingService.stop(this.licensePlate);
     this.unsubscribe();
     this.isTracking = false;
   }
