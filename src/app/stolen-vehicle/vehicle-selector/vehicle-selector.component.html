@@ -7,8 +7,18 @@
         </div>
       </form>
     </form>
+    <h6>Finland</h6>
     <ul class="list-group" *ngIf="(filteredVehicles | async).length > 0">
-      <li *ngFor="let vehicle of filteredVehicles | async"
+      <li *ngFor="let vehicle of filteredVehicles | async | vehicleCountry:['FI']"
+          (click)="selectVehicle(vehicle)"
+          [class.active]="isThisVehicleSelected(vehicle)"
+          class="hoverable list-group-item">
+        {{ vehicle.licensePlate }} from {{ vehicle.originCountry }}
+      </li>
+    </ul>
+    <h6>Other countries</h6>
+    <ul class="list-group" *ngIf="(filteredVehicles | async).length > 0">
+      <li *ngFor="let vehicle of filteredVehicles | async | vehicleCountry:['!FI']"
           (click)="selectVehicle(vehicle)"
           [class.active]="isThisVehicleSelected(vehicle)"
           class="hoverable list-group-item">
