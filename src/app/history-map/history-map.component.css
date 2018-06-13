@@ -3,7 +3,6 @@
   height: 500px;
 }
 
-.resize{
-  max-width:50%;
-  max-height:50%;
+.alert{
+  color : red;
 }

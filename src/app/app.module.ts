@@ -1,5 +1,5 @@
-import {BrowserModule} from '@angular/platform-browser';
-import {NgModule} from '@angular/core';
+import { BrowserModule } from '@angular/platform-browser';
+import { NgModule } from '@angular/core';
 
 import {AppComponent} from './app.component';
 import {StolenVehicleComponent} from './stolen-vehicle/stolen-vehicle/stolen-vehicle.component';
@@ -15,10 +15,12 @@ import {HTTP_INTERCEPTORS, HttpClient, HttpClientModule} from '@angular/common/h
 import {LoginService} from './services/login.service';
 import {ConfigService} from './services/config.service';
 import {MapComponent} from './map/map/map.component';
-import {VehicleinfoService} from './services/vehicleinfo.service';
+import { VehicleinfoService } from './services/vehicleinfo.service';
 import { StompConfig, StompService } from '@stomp/ng2-stompjs';
-import {TrackingService} from './services/tracking.service';
-import {VehicleCountryPipe} from './filters/vehicle-country.pipe';
+import { TrackingService } from './services/tracking.service';
+import { VehicleCountryPipe } from './filters/vehicle-country.pipe';
+import { HistoryMapComponent } from './history-map/history-map.component';
+import { TranslocationService } from './services/translocation.service';
 const stompConfig = {
   url: 'ws://teunwillems.nl:15674/ws',
   headers: {
@@ -34,9 +36,16 @@ const stompConfig = {
 };
 
 const appRoutes: Routes = [
+<<<<<<< HEAD
   {path: 'stolen-vehicle', component: StolenVehicleComponent},
   {path: 'stolen-vehicle/map/:licenseplate', component: MapComponent},
   {path: '', component: HomepageComponent}
+=======
+  { path: 'stolen-vehicle', component: StolenVehicleComponent },
+  { path: 'stolen-vehicle/map', component: MapComponent },
+  { path: 'stolen-vehicle/history-map', component: HistoryMapComponent },
+  { path: '', component: HomepageComponent }
+>>>>>>> 8bb3d26ed2035e1b637b6d03529b341081637ed6
 ];
 
 @NgModule({
@@ -48,7 +57,12 @@ const appRoutes: Routes = [
     VehicleSelectorComponent,
     VehicleViewComponent,
     MapComponent,
+<<<<<<< HEAD
     VehicleCountryPipe,
+=======
+    HistoryMapComponent
+    // LoginComponent,
+>>>>>>> 8bb3d26ed2035e1b637b6d03529b341081637ed6
   ],
   imports: [
     BrowserModule,
@@ -56,10 +70,11 @@ const appRoutes: Routes = [
     HttpClientModule,
     RouterModule.forRoot(
       appRoutes,
-      {enableTracing: false} // <-- debugging purposes only
+      { enableTracing: false } // <-- debugging purposes only
     )
   ],
   providers: [
+    TranslocationService,
     HttpClient,
     VehicleService,
     {
