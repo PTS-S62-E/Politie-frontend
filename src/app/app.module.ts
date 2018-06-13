@@ -36,16 +36,11 @@ const stompConfig = {
 };
 
 const appRoutes: Routes = [
-<<<<<<< HEAD
   {path: 'stolen-vehicle', component: StolenVehicleComponent},
   {path: 'stolen-vehicle/map/:licenseplate', component: MapComponent},
-  {path: '', component: HomepageComponent}
-=======
-  { path: 'stolen-vehicle', component: StolenVehicleComponent },
-  { path: 'stolen-vehicle/map', component: MapComponent },
+  {path: '', component: HomepageComponent},
   { path: 'stolen-vehicle/history-map', component: HistoryMapComponent },
   { path: '', component: HomepageComponent }
->>>>>>> 8bb3d26ed2035e1b637b6d03529b341081637ed6
 ];
 
 @NgModule({
@@ -57,12 +52,9 @@ const appRoutes: Routes = [
     VehicleSelectorComponent,
     VehicleViewComponent,
     MapComponent,
-<<<<<<< HEAD
     VehicleCountryPipe,
-=======
     HistoryMapComponent
     // LoginComponent,
->>>>>>> 8bb3d26ed2035e1b637b6d03529b341081637ed6
   ],
   imports: [
     BrowserModule,
