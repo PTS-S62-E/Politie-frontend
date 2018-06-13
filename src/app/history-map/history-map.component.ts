@@ -35,8 +35,14 @@ export class HistoryMapComponent implements OnInit {
       this.translocationService.getTranslocations(this.licensePlate, this.createValidDate(this.startDate), this.createValidDate(this.endDate))
         .subscribe(result => {
           this.administrationDto = result;
-          this.drawHistory(result);
-          this.setViewToLastTranslocation(result);
+
+          if (this.administrationDto.journeys.length === 0) {
+            this.warning = 'No movement registered during this time period.'
+          }
+          else {
+            this.drawHistory(result);
+            this.setViewToLastTranslocation(result);
+          }
         });
     }
     else {
