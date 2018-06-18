@@ -7,6 +7,7 @@
       </div>
       <span class="sub-text">Serial number: {{ vehicle.getValue().serialNumber }}</span>
       <hr/>
+
       <div *ngIf="vehicleInfo != null">
         <h6>Vehicle information</h6>
 
@@ -16,10 +17,11 @@
           <li class="list-group-item">Country code: {{ vehicleInfo.countryCode }}</li>
         </ul>
       </div>
-      <div *ngIf="vehicleOwnership != null">
+
+      <div *ngIf="vehicleOwnership != null && vehicleOwnership.tariffCategory != null">
         <h6>Ownership information</h6>
 
-        <ul class="list-group list-group-flush">
+        <ul class="list-group list-group-flush" *ngIf="vehicleOwnership.tariffCategory != null">
           <li class="list-group-item">
             <div>
               Tariff category: {{ vehicleOwnership.tariffCategory.name }}<br/>
@@ -27,7 +29,11 @@
             </div>
           </li>
         </ul>
+      </div>
 
+      <div *ngIf="vehicleOwnership != null && vehicleOwnership.ownership != null">
+        <h6>Owners</h6>
+        <span class="sub-text" *ngIf="vehicleOwnership.ownership.length == 0">No owners found</span>
         <div class="card" *ngFor="let ownership of vehicleOwnership.ownership">
           <div class="card-body">
             <h5 class="card-title">{{ ownership.owner.name }}</h5>
@@ -36,6 +42,7 @@
             </div>
           </div>
         </div>
+        <hr/>
       </div>
 
       <div class="btn btn-success" (click)="markFound()">Mark found</div>
