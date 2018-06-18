@@ -86,6 +86,8 @@ export class MapComponent implements OnInit, OnDestroy {
   }
 
   onTrackingMessage = (message: Message) => {
+    console.log('Message recieved!');
+    console.log(message.body);
     const trackingDto: TrackingDto = JSON.parse(message.body);
     const translocationDto: TranslocationDto = trackingDto.translocationDto;
 
