@@ -1,6 +1,5 @@
 import {BrowserModule} from '@angular/platform-browser';
 import {NgModule} from '@angular/core';
-
 import {AppComponent} from './app.component';
 import {StolenVehicleComponent} from './stolen-vehicle/stolen-vehicle/stolen-vehicle.component';
 import {NavbarComponent} from './general/navbar/navbar.component';
