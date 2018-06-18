@@ -19,6 +19,7 @@ import {VehicleinfoService} from './services/vehicleinfo.service';
 import {StompConfig, StompService} from '@stomp/ng2-stompjs';
 import {TrackingService} from './services/tracking.service';
 import {VehicleCountryPipe} from './filters/vehicle-country.pipe';
+
 import {HistoryMapComponent} from './history-map/history-map.component';
 import {TranslocationService} from './services/translocation.service';
 
@@ -66,25 +67,27 @@ const appRoutes: Routes = [
       {enableTracing: false} // <-- debugging purposes only
     )
   ],
-  providers: [
-    TranslocationService,
-    HttpClient,
-    VehicleService,
-    {
-      provide: HTTP_INTERCEPTORS,
-      useClass: JWTInterceptor,
-      multi: true
-    },
-    LoginService,
-    ConfigService,
-    StompService,
-    {
-      provide: StompConfig, useValue: stompConfig
-    },
-    VehicleinfoService,
-    TrackingService
-  ],
+  providers:
+    [
+      TranslocationService,
+      HttpClient,
+      VehicleService,
+      {
+        provide: HTTP_INTERCEPTORS,
+        useClass: JWTInterceptor,
+        multi: true
+      },
+      LoginService,
+      ConfigService,
+      StompService,
+      {
+        provide: StompConfig, useValue: stompConfig
+      },
+      VehicleinfoService,
+      TrackingService
+    ],
   bootstrap: [AppComponent]
 })
+
 export class AppModule {
 }
