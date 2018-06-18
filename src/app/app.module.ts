@@ -16,9 +16,12 @@ import {LoginService} from './services/login.service';
 import {ConfigService} from './services/config.service';
 import {MapComponent} from './map/map/map.component';
 import {VehicleinfoService} from './services/vehicleinfo.service';
-import { StompConfig, StompService } from '@stomp/ng2-stompjs';
+import {StompConfig, StompService} from '@stomp/ng2-stompjs';
 import {TrackingService} from './services/tracking.service';
 import {VehicleCountryPipe} from './filters/vehicle-country.pipe';
+import {HistoryMapComponent} from './history-map/history-map.component';
+import {TranslocationService} from './services/translocation.service';
+
 const stompConfig = {
   url: 'ws://teunwillems.nl:15674/ws',
   headers: {
@@ -36,6 +39,7 @@ const stompConfig = {
 const appRoutes: Routes = [
   {path: 'stolen-vehicle', component: StolenVehicleComponent},
   {path: 'stolen-vehicle/map/:licenseplate', component: MapComponent},
+  {path: 'stolen-vehicle/history-map', component: HistoryMapComponent},
   {path: '', component: HomepageComponent}
 ];
 
@@ -49,6 +53,9 @@ const appRoutes: Routes = [
     VehicleViewComponent,
     MapComponent,
     VehicleCountryPipe,
+    MapComponent,
+    HistoryMapComponent
+    // LoginComponent,
   ],
   imports: [
     BrowserModule,
@@ -60,6 +67,7 @@ const appRoutes: Routes = [
     )
   ],
   providers: [
+    TranslocationService,
     HttpClient,
     VehicleService,
     {
@@ -78,4 +86,5 @@ const appRoutes: Routes = [
   ],
   bootstrap: [AppComponent]
 })
-export class AppModule { }
+export class AppModule {
+}
