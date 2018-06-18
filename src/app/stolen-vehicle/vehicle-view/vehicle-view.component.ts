@@ -28,6 +28,9 @@ export class VehicleViewComponent implements AfterContentInit {
       console.log('New vehicle');
       console.log(vehicle);
 
+      if (vehicle.originCountry !== 'FI') {
+        return;
+      }
       if (vehicle.licensePlate === undefined || vehicle.licensePlate === null) {
         return;
       }
