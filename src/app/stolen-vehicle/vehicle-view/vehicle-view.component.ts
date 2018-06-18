@@ -17,19 +17,20 @@ export class VehicleViewComponent implements AfterContentInit {
   public vehicleInfo: BackendVehicleInfo = null;
   public vehicleOwnership: VehicleInfoResponse = null;
 
-  private isLoading = true;
-
   constructor(private vehicleService: VehicleService, private vehicleInfoService: VehicleinfoService, private router: Router) {
   }
 
   ngAfterContentInit() {
-    console.log('Started with vehicle');
-    console.log(this.vehicle);
     this.vehicle.subscribe(vehicle => {
+      this.vehicleInfo = null;
+      this.vehicleOwnership = null;
 
       console.log('New vehicle');
       console.log(vehicle);
 
+      if (vehicle.originCountry !== 'FI') {
+        return;
+      }
       if (vehicle.licensePlate === undefined || vehicle.licensePlate === null) {
         return;
       }

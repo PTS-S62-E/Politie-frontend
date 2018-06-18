@@ -135,7 +135,8 @@ export class MapComponent implements OnInit, OnDestroy {
 
   public stopTracking() {
     this.trackingService.stop(this.licensePlate).subscribe(res => {
-      console.log('STOP TRACKING');
+      console.log('DELETE OK');
+      console.log(res);
     }, err => {
       console.log(err);
     });
