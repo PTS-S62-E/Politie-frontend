@@ -86,6 +86,8 @@ export class MapComponent implements OnInit, OnDestroy {
   }
 
   onTrackingMessage = (message: Message) => {
+    console.log('Message recieved!');
+    console.log(message.body);
     const trackingDto: TrackingDto = JSON.parse(message.body);
     const translocationDto: TranslocationDto = trackingDto.translocationDto;
 
@@ -132,7 +134,11 @@ export class MapComponent implements OnInit, OnDestroy {
   }
 
   public stopTracking() {
-    this.trackingService.stop(this.licensePlate);
+    this.trackingService.stop(this.licensePlate).subscribe(res => {
+      console.log('STOP TRACKING');
+    }, err => {
+      console.log(err);
+    });
     this.unsubscribe();
     this.isTracking = false;
   }
